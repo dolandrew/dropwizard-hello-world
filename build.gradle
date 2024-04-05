@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.github.johnrengelman:shadow:8.1.1'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.example.helloworld.HelloWorldApplication'
+
+run {
+    args = ['server', 'config.yml']
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.dropwizard:dropwizard-core:4.0.7")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+shadowJar {
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'com.example.helloworld.HelloWorldApplication'
+    }
+}
